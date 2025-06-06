@@ -1,7 +1,7 @@
 # Sort Wars
 
 A small side-project that visualises classic sorting algorithms in real time.  
-It’s written in React + Vite and uses a read-only Monaco Editor so you can peek at the implementation of each algorithm while it’s running.
+It’s written in React and uses a read-only Monaco Editor so you can look at the implementation of each algorithm.
 
 The current deployed code can be tried here: https://sort-visualizer-rho.vercel.app/
 
