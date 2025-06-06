@@ -79,9 +79,19 @@ const ctx = new (window.AudioContext || window.webkitAudioContext)();
 const beep = () => {
   try {
     if (ctx.state === 'suspended') ctx.resume();
-    const o = ctx.createOscillator(); o.frequency.value = 880; o.connect(ctx.destination);
-    o.start(); o.stop(ctx.currentTime + .04);
-  } catch { }
+
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    gain.gain.value = 0.03;   // << lower number = quieter (0 to 1)
+
+    osc.frequency.value = 880;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.04);
+  } catch {}
 };
 
 /* ---------- SVG icon helper ---------- */
