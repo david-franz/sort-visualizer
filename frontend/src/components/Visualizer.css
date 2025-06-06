@@ -1,0 +1,99 @@
+/* layout */
+.wrap {
+  font-family: system-ui, sans-serif;
+  background: #111;
+  color: #eee;
+  height: 100vh;
+  display: flex;
+  flex-direction: column
+}
+
+.info {
+  font-size: .75rem;
+  color: #aaa;
+  margin-bottom: 4px
+}
+
+header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 16px;
+  background: #222;
+  flex-wrap: wrap
+}
+
+header h1 {
+  margin: 0 12px 0 0;
+  font-size: 1.35rem
+}
+
+/* global sliders */
+.slider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .85rem
+}
+
+input[type=range] {
+  accent-color: #4e8ef7;
+  width: 120px
+}
+
+/* buttons */
+button {
+  background: #333;
+  border: 1px solid #444;
+  color: #eee;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed
+}
+
+button:hover:not(:disabled) {
+  background: #444
+}
+
+/* rows */
+.card {
+  border: 1px solid #333;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #1b1b1b
+}
+
+.ctrl {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px
+}
+
+select {
+  background: #2a2a2a;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 3px 4px;
+  border-radius: 4px
+}
+
+/* bars */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 120px;
+  overflow-x: auto;
+  max-width: 100%
+}
+
+.bar {
+  width: calc(100% / 100)
+}
