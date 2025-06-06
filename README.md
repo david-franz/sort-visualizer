@@ -1,12 +1,30 @@
-# React + Vite
+# Sort Wars
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small side-project that visualises classic sorting algorithms in real time.  
+It’s written in React + Vite and uses a read-only Monaco Editor so you can peek at the implementation of each algorithm while it’s running.
 
-Currently, two official plugins are available:
+The current deployed code can be tried here: https://sort-visualizer-rho.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What it shows
 
-## Expanding the ESLint configuration
+| Algorithm | Colour | Notes |
+|-----------|--------|-------|
+| Bubble Sort      | blue   | step-by-step swaps |
+| Selection Sort   | pink   | min-swap each pass |
+| Insertion Sort   | orange | running insert window |
+| Merge Sort       | green  | recursive merge snapshots |
+| Quick Sort       | yellow | Lomuto partition, every swap |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Each row ticks as it moves, counts the steps it took and tells you how long it needed.  
+You can run, pause, step, stop, or reset algorithms individually – or do the same for all rows from the top toolbar.
+
+## Getting it running locally
+
+```bash
+# clone and install
+git clone https://github.com/<your-user>/<repo>.git
+cd <repo>
+npm install
+
+# start dev server
+npm run dev      # vite will open http://localhost:5173
