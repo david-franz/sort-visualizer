@@ -4,7 +4,7 @@ import './Visualizer.css';
 
 /* ---------- read-only code snippets ---------- */
 const defaultCode = {
-  'Bubble Sort': `function bubbleSort(arr) {
+  'Bubble Sort': `function bubbleSort(arr: number[]) {
   let a = [...arr];
   for (let i = 0; i < a.length; i++) {
     for (let j = 0; j < a.length - i - 1; j++) {
@@ -13,7 +13,7 @@ const defaultCode = {
   }
   return a;
 }`,
-  'Selection Sort': `function selectionSort(arr) {
+  'Selection Sort': `function selectionSort(arr: number[]) {
   let a = [...arr];
   for (let i = 0; i < a.length - 1; i++) {
     let m = i;
@@ -22,7 +22,7 @@ const defaultCode = {
   }
   return a;
 }`,
-  'Insertion Sort': `function insertionSort(arr) {
+  'Insertion Sort': `function insertionSort(arr: number[]) {
   let a = [...arr];
   for (let i = 1; i < a.length; i++) {
     let key = a[i], j = i - 1;
@@ -31,17 +31,17 @@ const defaultCode = {
   }
   return a;
 }`,
-  'Merge Sort': `function mergeSort(arr) {
+  'Merge Sort': `function mergeSort(arr: number[]) {
   if (arr.length < 2) return arr;
   const m = Math.floor(arr.length / 2);
   return merge(mergeSort(arr.slice(0, m)), mergeSort(arr.slice(m)));
 }
-function merge(l, r) {
+function merge(l: number[], r: number[]) {
   const out = [];
   while (l.length && r.length) out.push(l[0] <= r[0] ? l.shift() : r.shift());
   return out.concat(l, r);
 }`,
-  'Quick Sort': `function quickSort(arr) {
+  'Quick Sort': `function quickSort(arr: number[]) {
   if (arr.length < 2) return arr;
   const pivot = arr[arr.length - 1];
   const left = arr.filter(x => x < pivot);
@@ -80,18 +80,18 @@ const beep = () => {
   try {
     if (ctx.state === 'suspended') ctx.resume();
 
-    const osc  = ctx.createOscillator();
+    const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    gain.gain.value = 0.03;   // << lower number = quieter (0 to 1)
+    gain.gain.value = 0.05;   // << lower number = quieter (0 to 1)
 
-    osc.frequency.value = 880;
+    osc.frequency.value = 270;
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.04);
-  } catch {}
+    osc.stop(ctx.currentTime + 0.05);
+  } catch { }
 };
 
 /* ---------- SVG icon helper ---------- */
@@ -173,54 +173,60 @@ export default function Visualizer() {
         <h1>Sort Wars</h1>
         <button onClick={() => all('run')} title="Run All"><I d={icon.play} /></button>
         <button onClick={() => all('pause')} title="Pause All"><I d={icon.pause} /></button>
-        <button onClick={() => all('resume')} title="Resume All"><I d={icon.play} /></button>
         <button onClick={() => all('stop')} title="Stop All"><I d={icon.stop} /></button>
         <button onClick={() => all('reset')} title="Reset All"><I d={icon.reset} /></button>
         <label className="slider">Bars {barCount}
-          <input type="range" min="0" max="100" value={barCount}
-            onChange={e => setBarCount(+e.target.value)} />
+          <input type="range" min="0" max="100" step="5" value={barCount}
+            onChange={e => {
+              setBarCount(e.target.value);
+              all('reset');
+            }
+          }/>
         </label>
         <label className="slider">Delay {delay} ms
-          <input type="range" min="0" max="1000" value={delay}
-            onChange={e => setDelay(+e.target.value)} />
+          <input type="range" min="0" max="100" step="5" value={delay}
+            onChange={ e => setDelay(e.target.value)}/>
         </label>
       </header>
 
-      {rows.map(r => (
-        <section key={r.id} className="card">
-          <div className="ctrl">
-            <select value={r.alg} disabled={r.running || r.paused}
-              onChange={e => mut(r.id, row => ({ ...row, alg: e.target.value, code: defaultCode[e.target.value] }))}>
-              {Object.keys(defaultCode).map(k => <option key={k}>{k}</option>)}
-            </select>
+      <div class="cards">
+        {rows.map(r => (
+          <section key={r.id} className="card">
+            <div className="ctrl">
+              <select value={r.alg} disabled={r.running || r.paused}
+                onChange={e => mut(r.id, row => ({ ...row, alg: e.target.value, code: defaultCode[e.target.value] }))}>
+                {Object.keys(defaultCode).map(k => <option key={k}>{k}</option>)}
+              </select>
 
-            {!r.running && <button onClick={() => run(r.id)}><I d={icon.play} /></button>}
-            {r.running && !r.paused && <button onClick={() => pause(r.id)}><I d={icon.pause} /></button>}
-            {r.running && r.paused && <button onClick={() => resume(r.id)}><I d={icon.play} /></button>}
-            <button disabled={!r.running} onClick={() => stop(r.id)}><I d={icon.stop} /></button>
-            <button disabled={r.running} onClick={() => reset(r.id)}><I d={icon.reset} /></button>
-            <button disabled={!r.paused} onClick={() => stepB(r.id)}><I d={icon.stepB} /></button>
-            <button disabled={!r.paused} onClick={() => stepF(r.id)}><I d={icon.stepF} /></button>
-            <button onClick={() => mut(r.id, row => ({ ...row, show: !row.show }))}><I d={icon.code} /></button>
-          </div>
+              {!r.running && <button onClick={() => run(r.id)}><I d={icon.play} /></button>}
+              {r.running && !r.paused && <button onClick={() => pause(r.id)}><I d={icon.pause} /></button>}
+              {r.running && r.paused && <button onClick={() => resume(r.id)}><I d={icon.play} /></button>}
+              <button disabled={!r.running} onClick={() => stop(r.id)}><I d={icon.stop} /></button>
+              <button disabled={r.running} onClick={() => reset(r.id)}><I d={icon.reset} /></button>
+              <button disabled={!r.paused} onClick={() => stepB(r.id)}><I d={icon.stepB} /></button>
+              <button disabled={!r.paused} onClick={() => stepF(r.id)}><I d={icon.stepF} /></button>
+              <button onClick={() => mut(r.id, row => ({ ...row, show: !row.show }))}><I d={icon.code} /></button>
+            </div>
 
-          <div className="info">
-            Steps: {r.steps.length} &nbsp;|&nbsp;
-            {r.elapsed ? `Time: ${fmt(r.elapsed)}` : r.running ? 'Running…' : ''}
-          </div>
+            <div className="info">
+              Steps: {r.steps.length} &nbsp;|&nbsp;
+              {r.elapsed ? `Time: ${fmt(r.elapsed)}` : r.running ? 'Running…' : ''}
+            </div>
 
-          <div className="bars">
-            {r.arr.map((h, i) =>
-              <div key={i} className="bar" style={{
-                height: h,
-                background: colour[r.alg],
-                transition: `height ${delay - 1}ms ease`
-              }} />)}
-          </div>
+            <div className="bars">
+              {r.arr.map((h, i) =>
+                <div key={i} className="bar" style={{
+                  height: h,
+                  background: colour[r.alg],
+                  transition: `height ${delay - 1}ms ease`
+                }} />)}
+            </div>
 
-          {r.show && <Editor height="220px" defaultLanguage="javascript"
-            value={r.code} options={{ readOnly: true, minimap: { enabled: false } }} />}
-        </section>
-      ))}
+            {r.show && <Editor height="200px" defaultLanguage="typescript"
+              value={r.code} options={{ readOnly: true, fontSize: 10, minimap: { enabled: false } }} />}
+          </section>
+        ))}
+      </div>
+
     </div>);
 }

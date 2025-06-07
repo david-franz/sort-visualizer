@@ -3,15 +3,15 @@
   font-family: system-ui, sans-serif;
   background: #111;
   color: #eee;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 
 .info {
   font-size: .75rem;
   color: #aaa;
-  margin-bottom: 4px
+  margin-bottom: 4px;
 }
 
 header {
@@ -61,10 +61,17 @@ button:hover:not(:disabled) {
 }
 
 /* rows */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+}
+
 .card {
   border: 1px solid #333;
-  margin: 10px;
-  padding: 10px;
+  margin: 16px;
+  padding: 16px;
+  width: 42%;
   border-radius: 6px;
   background: #1b1b1b
 }
@@ -89,7 +96,7 @@ select {
   display: flex;
   align-items: flex-end;
   gap: 1px;
-  height: 120px;
+  height: 100px;
   overflow-x: auto;
   max-width: 100%
 }
